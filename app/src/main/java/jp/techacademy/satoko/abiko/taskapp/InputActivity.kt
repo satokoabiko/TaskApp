@@ -172,28 +172,24 @@ class InputActivity : AppCompatActivity() {
                 }
             }
         }
+        // タスクの日時にアラームを設定
+        val intent = Intent(applicationContext, TaskAlarmReceiver::class.java)
+        intent.putExtra(EXTRA_TASK, task.id)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            task.id,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmManager.setAlarmClock(AlarmClockInfo(calendar.timeInMillis, null), pendingIntent)
     }
-
-    // タスクの日時にアラームを設定
-    val intent = Intent(applicationContext, TaskAlarmReceiver::class.java)
-    intent.putExtra(EXTRA_TASK, task.id)
-    val pendingIntent = PendingIntent.getBroadcast(
-        this,
-        task.id,
-        intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
-
-    val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-    alarmManager.setAlarmClock(AlarmClockInfo(calendar.timeInMillis, null), pendingIntent)
-}
 
     /**
      * 日付と時刻のボタンの表示を設定する
      */
     private fun setDateTimeButtonText() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.JAPANESE)
-        val calendar
         binding.content.dateButton.text = dateFormat.format(calendar.time)
 
         val timeFormat = SimpleDateFormat("HH:mm", Locale.JAPANESE)
