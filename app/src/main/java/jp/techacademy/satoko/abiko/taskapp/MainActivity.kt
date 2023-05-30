@@ -1,19 +1,21 @@
 package jp.techacademy.satoko.abiko.taskapp
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
-import io.realm.kotlin.delete
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.notifications.InitialResults
 import io.realm.kotlin.notifications.UpdatedResults
 import io.realm.kotlin.query.Sort
 import jp.techacademy.satoko.abiko.taskapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
+//他のアプリのExtraと間違えないようにパッケージ名を含めた文字列を指定
+const val EXTRA_TASK = "jp.techacademy.satoko.abiko.taskapp.TASK"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -26,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        binding.fab.setOnClickListener {
+            val intent = Intent(this, InputActivity::class.java)
+            startActivity(intent)
         }
 
         // TaskAdapterを生成し、ListViewに設定する
@@ -36,13 +38,52 @@ class MainActivity : AppCompatActivity() {
         binding.listView.adapter = taskAdapter
 
         // ListViewをタップしたときの処理
-        binding.listView.setOnItemClickListener { parent, view, position, id ->
-            // TODO: 入力・編集する画面に遷移させる
+        binding.listView.setOnItemClickListener { parent, _, position, _ ->
+            // 入力・編集する画面に遷移させる
+            val task = parent.adapter.getItem(position) as Task
+            val intent = Intent(this, InputActivity::class.java)
+            intent.putExtra(EXTRA_TASK, task.id)
+            startActivity(intent)
         }
 
         // ListViewを長押ししたときの処理
-        binding.listView.setOnItemLongClickListener { parent, view, position, id ->
-            // TODO: タスクを削除する
+        binding.listView.setOnItemLongClickListener { parent, _, position, _ ->
+            // タスクを削除する
+            val task = parent.adapter.getItem(position) as Task
+
+            // ダイアログを表示する
+            val builder = AlertDialog.Builder(this)
+
+            builder.setTitle("削除")
+            builder.setMessage(task.title + "を削除しますか")
+            builder.setPositiveButton("OK") { _, _ ->
+                realm.writeBlocking {
+                    // タスクのIDに該当するデータを削除する
+                    val tasks = query<Task>("id==${task.id}").find()
+                    tasks.forEach {
+                        delete(it)
+                    }
+                }
+                // アラームを削除
+                val resultIntent = Intent(applicationContext, TaskAlarmReceiver::class.java)
+                resultIntent.putExtra(EXTRA_TASK, task.id)
+                val resultPendingIntent = PendingIntent.getBroadcast(
+                    this,
+                    task.id,
+                    resultIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
+                val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+                alarmManager.cancel(resultPendingIntent)
+
+            }
+
+            builder.setNegativeButton("CANCEL", null)
+
+            val dialog = builder.create()
+            dialog.show()
+
             true
         }
 
@@ -65,9 +106,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // 表示テスト用のタスクを作成してRealmに登録する
-        addTaskForTest()
     }
 
     override fun onDestroy() {
@@ -80,28 +118,9 @@ class MainActivity : AppCompatActivity() {
     /**
      * リストの一覧を更新する
      */
-    private fun reloadListView(tasks: List<Task>) {
-        taskAdapter.updateTaskList(tasks)
-    }
-
-    /**
-     * 表示テスト用のタスクを作成してRealmに登録する
-     */
-    private fun addTaskForTest() {
-        // 日付を文字列に変換用
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPANESE)
-
-        realm.writeBlocking {
-            // 登録済のデータがあれば削除
-            delete<Task>()
-
-            // idが0の新しいデータを1件登録
-            copyToRealm(Task().apply {
-                id = 0
-                title = "作業"
-                contents = "プログラムを書いてPUSHする"
-                date = simpleDateFormat.format(Date())
-            })
+    private suspend fun reloadListView(tasks: List<Task>) {
+        withContext(Dispatchers.Main) {
+            taskAdapter.updateTaskList(tasks)
         }
     }
 }
