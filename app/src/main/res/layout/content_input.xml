@@ -9,10 +9,28 @@
     tools:context=".InputActivity"
     tools:showIn="@layout/activity_input">
 
+
+    <EditText
+        android:id="@+id/search_category_text"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:hint="カテゴリ指定"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="VisualLintTextFieldSize" />
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="96dp"
+        android:layout_height="48dp"
+        android:layout_toRightOf="@+id/search_category_text"
+        android:text="検索" />
+
     <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_below="@id/search_category_text"
         android:hint="@string/input_title_hint"
         android:importantForAutofill="no"
         android:inputType="text"
@@ -28,11 +46,20 @@
         android:inputType="text"
         tools:ignore="VisualLintTextFieldSize" />
 
+    <EditText
+        android:id="@+id/category_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/content_edit_text"
+        android:hint="カテゴリ"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        tools:ignore="VisualLintTextFieldSize" />
     <Button
         android:id="@+id/date_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content_edit_text"
+        android:layout_below="@id/category_edit_text"
         android:layout_alignParentStart="true"
         android:layout_marginEnd="16dp"
         android:layout_toStartOf="@+id/time_button"
@@ -43,7 +70,7 @@
         android:id="@id/time_button"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/content_edit_text"
+        android:layout_below="@id/category_edit_text"
         android:layout_alignParentEnd="true"
         android:text="@string/button_time_text" />
 
@@ -53,6 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/time_button"
         android:layout_alignParentEnd="true"
-        android:text="@string/button_done_text" />
+        android:text="決定" />
+
 
 </RelativeLayout>

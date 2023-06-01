@@ -38,6 +38,7 @@ class InputActivity : AppCompatActivity() {
         }
 
         // ボタンのイベントリスナーの設定
+        binding.content.searchButton.setOnClickListener(searchClickListener)
         binding.content.dateButton.setOnClickListener(dateClickListener)
         binding.content.timeButton.setOnClickListener(timeClickListener)
         binding.content.doneButton.setOnClickListener(doneClickListener)
@@ -101,6 +102,34 @@ class InputActivity : AppCompatActivity() {
             addTask()
             finish()
         }
+
+        }
+    /**
+     * カテゴリ検索ボタン
+     */
+    private val searchClickListener = View.OnClickListener {
+        CoroutineScope(Dispatchers.Default).launch {
+    //カテゴリ入力値を検索する
+            val frogsFlow: Flow<ResultsChange<categoryText>> = realm.query<categoryText>().asFlow()
+            val asyncCall: Deferred<Unit> = async {
+                frogsFlow.collect { results ->
+                    when (results) {
+                        // print out initial results
+                        is InitialResults<categoryText> -> {
+                            for (category in results.list) {
+                                Log.v("nothing: $category")
+                            }
+                        } else -> {
+                        // do nothing on changes
+                       }
+                    }
+                }
+            }
+// fetch all objects of a type as a results collection, synchronously
+            val categoryText: RealmResults<category> = realm.query<category>().find()
+            for(category in categoryText) {
+                Log.v("nothing: $category")
+            }        }
     }
 
     /**
@@ -129,6 +158,7 @@ class InputActivity : AppCompatActivity() {
             // taskの値を画面項目に反映
             binding.content.titleEditText.setText(task.title)
             binding.content.contentEditText.setText(task.contents)
+            binding.content.categoryEditText.setText(task.category)
         }
 
         // 日付と時刻のボタンの表示を設定
@@ -145,6 +175,7 @@ class InputActivity : AppCompatActivity() {
         // 登録（更新）する値を取得
         val title = binding.content.titleEditText.text.toString()
         val content = binding.content.contentEditText.text.toString()
+        val category = binding.content.categoryEditText.text.toString()
         val date = simpleDateFormat.format(calendar.time)
 
         if (task.id == -1) {
@@ -155,6 +186,7 @@ class InputActivity : AppCompatActivity() {
             // 画面項目の値で更新
             task.title = title
             task.contents = content
+            task.category = category
             task.date = date
 
             // 登録処理
@@ -168,6 +200,7 @@ class InputActivity : AppCompatActivity() {
                     // 画面項目の値で更新
                     this.title = title
                     this.contents = content
+                    this.category = category
                     this.date = date
                 }
             }

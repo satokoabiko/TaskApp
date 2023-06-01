@@ -22,7 +22,7 @@ import io.realm.kotlin.query.Sort
 import jp.techacademy.satoko.abiko.taskapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 
-const val EXTRA_TASK = "jp.techacademy.taro.kirameki.taskapp.TASK"
+const val EXTRA_TASK = "jp.techacademy.satoko.abiko.taskapp.TASK"
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -175,4 +175,6 @@ class MainActivity : AppCompatActivity() {
             taskAdapter.updateTaskList(tasks)
         }
     }
+
+
 }
