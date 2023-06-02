@@ -158,6 +158,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+       // 検索用カテゴリを入力したときの処理
+       // カテゴリ検索を実行したときの処理
+   //     val categorys: RealmResults"" =
+   //     realm.query<Frog>("_id == $0", PRIMARY_KEY_VALUE)
+
     }
 
     override fun onDestroy() {

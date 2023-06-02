@@ -7,10 +7,29 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <ListView
+      <EditText
+          android:id="@+id/search_category_text"
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:hint="検索したいカテゴリ"
+          android:importantForAutofill="no"
+          android:inputType="text"
+          tools:ignore="VisualLintTextFieldSize" />
+
+      <Button
+          android:id="@+id/search_button"
+          android:layout_width="96dp"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/search_category_text"
+          android:layout_alignParentEnd="true"
+          android:text="検索" />
+
+<ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+    </ListView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -22,6 +41,5 @@
         app:backgroundTint="?attr/colorPrimary"
         app:tint="@color/white"
         tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

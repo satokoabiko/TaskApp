@@ -38,7 +38,6 @@ class InputActivity : AppCompatActivity() {
         }
 
         // ボタンのイベントリスナーの設定
-        binding.content.searchButton.setOnClickListener(searchClickListener)
         binding.content.dateButton.setOnClickListener(dateClickListener)
         binding.content.timeButton.setOnClickListener(timeClickListener)
         binding.content.doneButton.setOnClickListener(doneClickListener)
@@ -102,34 +101,6 @@ class InputActivity : AppCompatActivity() {
             addTask()
             finish()
         }
-
-        }
-    /**
-     * カテゴリ検索ボタン
-     */
-    private val searchClickListener = View.OnClickListener {
-        CoroutineScope(Dispatchers.Default).launch {
-    //カテゴリ入力値を検索する
-            val frogsFlow: Flow<ResultsChange<categoryText>> = realm.query<categoryText>().asFlow()
-            val asyncCall: Deferred<Unit> = async {
-                frogsFlow.collect { results ->
-                    when (results) {
-                        // print out initial results
-                        is InitialResults<categoryText> -> {
-                            for (category in results.list) {
-                                Log.v("nothing: $category")
-                            }
-                        } else -> {
-                        // do nothing on changes
-                       }
-                    }
-                }
-            }
-// fetch all objects of a type as a results collection, synchronously
-            val categoryText: RealmResults<category> = realm.query<category>().find()
-            for(category in categoryText) {
-                Log.v("nothing: $category")
-            }        }
     }
 
     /**

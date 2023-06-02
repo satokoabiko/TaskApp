@@ -11,26 +11,9 @@
 
 
     <EditText
-        android:id="@+id/search_category_text"
-        android:layout_width="280dp"
-        android:layout_height="48dp"
-        android:hint="カテゴリ指定"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        tools:ignore="VisualLintTextFieldSize" />
-
-    <Button
-        android:id="@+id/search_button"
-        android:layout_width="96dp"
-        android:layout_height="48dp"
-        android:layout_toRightOf="@+id/search_category_text"
-        android:text="検索" />
-
-    <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@id/search_category_text"
         android:hint="@string/input_title_hint"
         android:importantForAutofill="no"
         android:inputType="text"
@@ -55,6 +38,7 @@
         android:importantForAutofill="no"
         android:inputType="text"
         tools:ignore="VisualLintTextFieldSize" />
+
     <Button
         android:id="@+id/date_button"
         android:layout_width="0dp"
@@ -81,6 +65,5 @@
         android:layout_below="@id/time_button"
         android:layout_alignParentEnd="true"
         android:text="決定" />
-
 
 </RelativeLayout>
