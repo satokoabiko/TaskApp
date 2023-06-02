@@ -162,8 +162,8 @@ class MainActivity : AppCompatActivity() {
        // 検索用カテゴリを入力したときの処理
        // カテゴリ検索を実行したときの処理
        //  Search equality on the primary key field name
-         val categorys: category? = realm.query<Task>(
-             "_id == $0", PRIMARY_KEY_VALUE).first().find()
+  //       val categorys: category? = realm.query<Task>(
+  //           "_id == $0", PRIMARY_KEY_VALUE).first().find()
 
     }
 

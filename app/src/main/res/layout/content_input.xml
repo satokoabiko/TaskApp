@@ -9,7 +9,6 @@
     tools:context=".InputActivity"
     tools:showIn="@layout/activity_input">
 
-
     <EditText
         android:id="@+id/title_edit_text"
         android:layout_width="match_parent"
