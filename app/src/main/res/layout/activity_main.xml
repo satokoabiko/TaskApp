@@ -25,4 +25,8 @@
         app:tint="@color/white"
         tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
 
+    <include
+        android:id="@+id/content2"
+        layout="@layout/content_main" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

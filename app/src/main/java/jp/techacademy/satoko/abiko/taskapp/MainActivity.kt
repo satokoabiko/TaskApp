@@ -3,6 +3,7 @@ package jp.techacademy.satoko.abiko.taskapp
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.Content
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
+        // フローティングアクションボタン押下、InputActivityへ
         binding.fab.setOnClickListener {
             val intent = Intent(this, InputActivity::class.java)
             startActivity(intent)
@@ -159,12 +160,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-       // 検索用カテゴリを入力したときの処理
-       // カテゴリ検索を実行したときの処理
-       //  Search equality on the primary key field name
-  //       val categorys: category? = realm.query<Task>(
-  //           "_id == $0", PRIMARY_KEY_VALUE).first().find()
-
+        // カテゴリ検索を実行したときの処理
+        binding.fab.setOnClickListener {
+            val category = parent.adapter.getItem(position) as Task
+            val intent = Intent(this, ContentsActivity::class.java)
+            intent.putExtra(EXTRA_TASK, task.category)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {
