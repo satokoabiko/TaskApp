@@ -3,7 +3,6 @@ package jp.techacademy.satoko.abiko.taskapp
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.content.Content
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -161,11 +160,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // カテゴリ検索を実行したときの処理
-        binding.fab.setOnClickListener {
-            val category = parent.adapter.getItem(position) as Task
-            val intent = Intent(this, ContentsActivity::class.java)
-            intent.putExtra(EXTRA_TASK, task.category)
-            startActivity(intent)
+        binding.content2.searchButton.setOnClickListener {
+            val category = binding.content2.searchCategoryText.text.toString()
+            Log.d("TaskApp", category)
+       //     val category = parent.adapter.getItem(position) as Task
+       //     val intent2 = Intent2(this, ContentsActivity::class.java)
+
+       //     intent.putExtra(EXTRA_TASK, task.category)
+       //     startActivity(intent)
         }
     }
 
