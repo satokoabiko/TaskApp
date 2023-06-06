@@ -161,12 +161,23 @@ class MainActivity : AppCompatActivity() {
         // カテゴリ検索を実行したときの処理
         binding.content2.searchButton.setOnClickListener {
             val category = binding.content2.searchCategoryText.text.toString()
-            Log.d("TaskApp", category)
-            //     val category = parent.adapter.getItem(position) as Task
-            //     val intent2 = Intent2(this, ContentsActivity::class.java)
+ //           Log.d("TaskApp", category)
+//            realm.query<Task>("category = $0", category)
+            // Realmからタスクの一覧を取得
+            val tasks = realm.query<Task>("category = $0", category).sort("date", Sort.DESCENDING).find()
 
-            //     intent.putExtra(EXTRA_TASK, task.category)
-            //     startActivity(intent)
+            // Realmが起動、または更新（追加、変更、削除）時にreloadListViewを実行する
+            CoroutineScope(Dispatchers.Default).launch {
+                tasks.asFlow().collect {
+                    when (it) {
+                        // 更新時
+                        is UpdatedResults -> reloadListView(it.list)
+                        // 起動時
+                        is InitialResults -> reloadListView(it.list)
+                        else -> {}
+                    }
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package jp.techacademy.satoko.abiko.taskapp
 
+import android.R
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -29,12 +30,12 @@ class TaskAdapter(context: Context) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View =
-            convertView ?: layoutInflater.inflate(android.R.layout.simple_list_item_2, parent, false)
+            convertView ?: layoutInflater.inflate(R.layout.simple_list_item_2, parent, false)
 
-        val textView1 = view.findViewById<TextView>(android.R.id.text1)
-        val textView2 = view.findViewById<TextView>(android.R.id.text2)
+        val textView1 = view.findViewById<TextView>(R.id.text1)
+        val textView2 = view.findViewById<TextView>(R.id.text2)
 
-        textView1.text = taskList[position].title
+        textView1.text = taskList[position].title + "(" + taskList[position].category + ")"
         textView2.text = taskList[position].date
 
         return view
