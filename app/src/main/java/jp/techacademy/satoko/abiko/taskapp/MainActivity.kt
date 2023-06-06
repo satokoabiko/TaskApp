@@ -87,10 +87,10 @@ class MainActivity : AppCompatActivity() {
 
         // TaskAdapterを生成し、ListViewに設定する
         taskAdapter = TaskAdapter(this)
-        binding.listView.adapter = taskAdapter
+        binding.content2.listView.adapter = taskAdapter
 
         // ListViewをタップしたときの処理
-        binding.listView.setOnItemClickListener { parent, _, position, _ ->
+        binding.content2.listView.setOnItemClickListener { parent, _, position, _ ->
             // 入力・編集する画面に遷移させる
             val task = parent.adapter.getItem(position) as Task
             val intent = Intent(this, InputActivity::class.java)
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // ListViewを長押ししたときの処理
-        binding.listView.setOnItemLongClickListener { parent, _, position, _ ->
+        binding.content2.listView.setOnItemLongClickListener { parent, _, position, _ ->
             // タスクを削除する
             val task = parent.adapter.getItem(position) as Task
 
@@ -158,16 +158,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
         // カテゴリ検索を実行したときの処理
         binding.content2.searchButton.setOnClickListener {
             val category = binding.content2.searchCategoryText.text.toString()
             Log.d("TaskApp", category)
-       //     val category = parent.adapter.getItem(position) as Task
-       //     val intent2 = Intent2(this, ContentsActivity::class.java)
+            //     val category = parent.adapter.getItem(position) as Task
+            //     val intent2 = Intent2(this, ContentsActivity::class.java)
 
-       //     intent.putExtra(EXTRA_TASK, task.category)
-       //     startActivity(intent)
+            //     intent.putExtra(EXTRA_TASK, task.category)
+            //     startActivity(intent)
         }
     }
 

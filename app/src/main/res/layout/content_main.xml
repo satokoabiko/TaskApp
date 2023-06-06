@@ -26,4 +26,11 @@
         android:layout_alignParentEnd="true"
         android:text="検索" />
 
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_Button">
+    </ListView>
+
 </RelativeLayout>
